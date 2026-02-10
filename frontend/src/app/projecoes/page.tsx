@@ -1,5 +1,6 @@
 import EventForecast from "@/components/EventForecast";
 import SalesProjection from "@/components/SalesProjection";
+import ScenarioSimulator from "@/components/ScenarioSimulator";
 
 export default function ProjecoesPage() {
   return (
@@ -12,6 +13,12 @@ export default function ProjecoesPage() {
           </p>
         </div>
         <EventForecast />
+      </section>
+
+      <div className="border-t border-zinc-800" />
+
+      <section>
+        <ScenarioSimulator />
       </section>
 
       <div className="border-t border-zinc-800" />
