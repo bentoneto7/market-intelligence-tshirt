@@ -82,12 +82,12 @@ export async function fetchEvents(filters: EventFilters = {}): Promise<Paginated
   const params = Object.fromEntries(
     Object.entries(filters).filter(([, v]) => v !== undefined && v !== "")
   );
-  const { data } = await api.get<PaginatedEvents>("/events", { params });
+  const { data } = await api.get<PaginatedEvents>("/events/", { params });
   return data;
 }
 
 export async function fetchDashboardStats(): Promise<DashboardStats> {
-  const { data } = await api.get<DashboardStats>("/dashboard/stats");
+  const { data } = await api.get<DashboardStats>("/dashboard/stats/");
   return data;
 }
 
@@ -95,14 +95,14 @@ export async function fetchRankings(
   metric: string = "sales_potential_score",
   limit: number = 10
 ): Promise<RankingResponse> {
-  const { data } = await api.get<RankingResponse>("/rankings", {
+  const { data } = await api.get<RankingResponse>("/rankings/", {
     params: { metric, limit },
   });
   return data;
 }
 
 export async function triggerScraping(platforms?: string[]): Promise<{ status: string; message: string }> {
-  const { data } = await api.post("/scraping/trigger", platforms ? { platforms } : {});
+  const { data } = await api.post("/scraping/trigger/", platforms ? { platforms } : {});
   return data;
 }
 
@@ -163,12 +163,12 @@ export async function fetchMarketplaceProducts(
   const params = Object.fromEntries(
     Object.entries(filters).filter(([, v]) => v !== undefined && v !== "")
   );
-  const { data } = await api.get<PaginatedMarketplace>("/marketplace/products", { params });
+  const { data } = await api.get<PaginatedMarketplace>("/marketplace/products/", { params });
   return data;
 }
 
 export async function fetchMarketplaceStats(): Promise<MarketplaceStats> {
-  const { data } = await api.get<MarketplaceStats>("/marketplace/stats");
+  const { data } = await api.get<MarketplaceStats>("/marketplace/stats/");
   return data;
 }
 
@@ -207,7 +207,7 @@ export interface SalesProjection {
 }
 
 export async function fetchSalesProjection(): Promise<SalesProjection> {
-  const { data } = await api.get<SalesProjection>("/marketplace/projection");
+  const { data } = await api.get<SalesProjection>("/marketplace/projection/");
   return data;
 }
 
@@ -259,7 +259,7 @@ export interface EventForecastResponse {
 }
 
 export async function fetchEventForecast(days: number = 90): Promise<EventForecastResponse> {
-  const { data } = await api.get<EventForecastResponse>("/marketplace/event-forecast", {
+  const { data } = await api.get<EventForecastResponse>("/marketplace/event-forecast/", {
     params: { days },
   });
   return data;
