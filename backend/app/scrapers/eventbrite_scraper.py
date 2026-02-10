@@ -70,13 +70,14 @@ class EventbriteScraper(BaseScraper):
         for url in self.SEARCH_URLS:
             try:
                 html = await self.fetch_page(url)
+                self.logger.info(f"Eventbrite [{url.split('/')[-2]}]: fetched {len(html)} chars")
                 events = self._parse_ld_json(html)
                 for ev in events:
                     source_url = ev.get("source_url", "")
                     if source_url and source_url not in seen_urls:
                         seen_urls.add(source_url)
                         all_events.append(ev)
-                self.logger.info(f"Eventbrite [{url.split('?')[0].split('/')[-2]}]: {len(events)} events")
+                self.logger.info(f"Eventbrite [{url.split('/')[-2]}]: {len(events)} music events")
             except Exception as e:
                 self.logger.error(f"Eventbrite scraping failed for {url}: {e}")
 
@@ -85,12 +86,29 @@ class EventbriteScraper(BaseScraper):
 
     def _parse_ld_json(self, html: str) -> list[dict]:
         """Extract events from LD+JSON structured data."""
-        soup = BeautifulSoup(html, "lxml")
         events = []
 
-        for script in soup.find_all("script", type="application/ld+json"):
+        # Try regex first (more reliable across environments)
+        ld_blocks = re.findall(
+            r'<script\s+type=["\']application/ld\+json["\']>(.*?)</script>',
+            html, re.DOTALL | re.IGNORECASE,
+        )
+
+        if not ld_blocks:
+            # Fallback to BeautifulSoup
             try:
-                data = json.loads(script.string or "")
+                soup = BeautifulSoup(html, "html.parser")
+                ld_blocks = [
+                    s.string or "" for s in soup.find_all("script", type="application/ld+json")
+                ]
+            except Exception:
+                pass
+
+        self.logger.info(f"Eventbrite: HTML {len(html)} chars, {len(ld_blocks)} LD+JSON blocks")
+
+        for block in ld_blocks:
+            try:
+                data = json.loads(block)
                 if isinstance(data, dict) and data.get("@type") == "ItemList":
                     for element in data.get("itemListElement", []):
                         item = element.get("item", element)
