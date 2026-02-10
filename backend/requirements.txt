@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+sqlalchemy
+httpx
+beautifulsoup4
+lxml
+apscheduler
+python-dotenv
+python-dateutil
+python-multipart
