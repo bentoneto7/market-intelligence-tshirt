@@ -29,6 +29,10 @@ class EventService:
             .filter(Event.is_active.is_(True))
         )
 
+        # By default, exclude past events (only show today and future)
+        if not date_from:
+            query = query.filter(Event.event_date >= datetime.utcnow().replace(hour=0, minute=0, second=0))
+
         if city:
             query = query.join(Venue).filter(Venue.city.ilike(f"%{city}%"))
         if date_from:
