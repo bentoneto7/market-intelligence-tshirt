@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./market_intelligence.db"
     API_HOST: str = "0.0.0.0"
     API_PORT: int = 8000
-    API_CORS_ORIGINS: str = "http://localhost:3000"
+    API_CORS_ORIGINS: str = "http://localhost:3000,https://*.vercel.app,https://*.railway.app"
 
     SCRAPING_INTERVAL_HOURS: int = 12
     SCRAPING_RATE_LIMIT_SECONDS: float = 2.0

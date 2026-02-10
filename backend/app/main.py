@@ -11,7 +11,29 @@ from app.database import init_db
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
+    # Auto-seed if database is empty
+    _auto_seed()
     yield
+
+
+def _auto_seed():
+    """Seed database with initial data if empty."""
+    from app.database import SessionLocal
+    from app.models.event import Event
+    from app.models.marketplace_product import MarketplaceProduct
+
+    db = SessionLocal()
+    try:
+        if db.query(Event).count() == 0:
+            db.close()
+            import subprocess
+            import sys
+            subprocess.run([sys.executable, "seed_data.py"], check=True)
+            subprocess.run([sys.executable, "seed_marketplace.py"], check=True)
+        else:
+            db.close()
+    except Exception:
+        db.close()
 
 
 app = FastAPI(
@@ -23,8 +45,8 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.API_CORS_ORIGINS.split(","),
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
