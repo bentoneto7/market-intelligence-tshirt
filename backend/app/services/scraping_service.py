@@ -14,26 +14,19 @@ from app.models.marketplace_product import MarketplaceProduct
 from app.models.scraping_log import ScrapingLog
 from app.models.venue import Venue
 from app.scrapers.eventbrite_scraper import EventbriteScraper
-from app.scrapers.eventim_scraper import EventimScraper
-from app.scrapers.shopee_scraper import ShopeeScraper
-from app.scrapers.sympla_scraper import SymplaScraper
 from app.utils.date_utils import normalize_artist_name
 from app.utils.logger import setup_logger
 
 logger = setup_logger("scraping_service")
 
 
-# Event scrapers (for shows/concerts)
+# Only Eventbrite works reliably (Sympla=SPA, Eventim=anti-bot, Shopee=403)
 EVENT_SCRAPERS = {
     "eventbrite": EventbriteScraper,
-    "sympla": SymplaScraper,
-    "eventim": EventimScraper,
 }
 
-# Marketplace scrapers (for products/t-shirts)
-MARKETPLACE_SCRAPERS = {
-    "shopee": ShopeeScraper,
-}
+# Marketplace scrapers disabled — Shopee API returns 403 (anti-bot)
+MARKETPLACE_SCRAPERS = {}
 
 
 class ScrapingService:

@@ -19,8 +19,10 @@ class EventbriteScraper(BaseScraper):
     SEARCH_URLS = [
         "https://www.eventbrite.com.br/d/brazil/shows-musicais/?page=1",
         "https://www.eventbrite.com.br/d/brazil/shows-musicais/?page=2",
+        "https://www.eventbrite.com.br/d/brazil/shows-musicais/?page=3",
         "https://www.eventbrite.com.br/d/brazil/concertos/?page=1",
         "https://www.eventbrite.com.br/d/brazil/festivais-de-musica/?page=1",
+        "https://www.eventbrite.com.br/d/brazil/festivais-de-musica/?page=2",
     ]
 
     # Known artists from our events database to match
@@ -30,6 +32,14 @@ class EventbriteScraper(BaseScraper):
         "chappell roan", "sabrina carpenter", "black label society", "cypress hill",
         "interpol", "mac demarco", "bryan adams", "jackson wang", "marisa monte",
         "lollapalooza", "monsters of rock", "rock in rio",
+        "ivete sangalo", "ivete", "anitta", "ludmilla", "luísa sonza", "luisa sonza",
+        "jorge ben", "gilberto gil", "caetano veloso", "djavan", "milton nascimento",
+        "linkin park", "iron maiden", "metallica", "slipknot", "green day",
+        "coldplay", "harry styles", "taylor swift", "billie eilish", "bruno mars",
+        "twenty one pilots", "imagine dragons", "arctic monkeys", "tame impala",
+        "red hot chili peppers", "foo fighters", "pearl jam", "radiohead",
+        "racionais", "criolo", "emicida", "xamã", "matuê", "wiu",
+        "rock n hall", "clareou",
     ]
 
     # Brazilian state mapping
@@ -109,6 +119,11 @@ class EventbriteScraper(BaseScraper):
             "degustação", "wine", "cerveja", "running", "corrida", "maratona",
             "futebol", "soccer", "basquete", "esporte", "teatro", "stand-up",
             "comédia", "comedy", "cosplay", "anime", "gaming",
+            "retiro", "retreat", "airshow", "portões abertos", "museu",
+            "skibidi", "toilette", "pizza", "fashion", "moda", "desfile",
+            "trilha", "hike", "surf", "kitesurf", "crossfit", "pilates",
+            "fotografia", "photography", "pintura", "artesanato", "bordado",
+            "coral", "tabernáculo", "transmissão ao vivo",
         ]
         if any(w in name_lower for w in skip_words):
             return None
